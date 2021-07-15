@@ -14,6 +14,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 app.config['SQLAlCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'chiesa'
 api = Api(app)
+db.init_app(app)
 
 @app.before_first_request
 def create_tables():
@@ -28,5 +29,4 @@ api.add_resource(StoreList, '/store')
 api.add_resource(User, '/register')
 
 if __name__ == '__main__':
-    db.init_app(app)
     app.run(debug=True)  # important to mention debug=True
