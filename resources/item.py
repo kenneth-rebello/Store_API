@@ -1,5 +1,5 @@
 from flask_restful import Resource, reqparse
-from flask_jwt import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt
 import sqlite3
 
 from models.item import ItemModel
@@ -49,6 +49,9 @@ class Item(Resource):
 
     @jwt_required()
     def delete(self, name):
+        claims = get_jwt()
+        if not claims['is_admin']:
+            return {'message': 'You need to be an admin'}
         item = ItemModel.find_by_name(name)
         if item:
             item.delete()
@@ -78,4 +81,4 @@ class ItemList(Resource):
     TABLE_NAME = 'items'
 
     def get(self):
-        return {'items': [item.json() for item in ItemModel.query.all()]}
+        return {'items': [item.json() for item in ItemModel.get_all()]}

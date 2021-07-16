@@ -17,6 +17,10 @@ class StoreModel(db.Model):
     @classmethod
     def find_by_name(cls, name):
        return cls.query.filter_by(name=name).first()
+    
+    @classmethod
+    def get_all(cls):
+        return cls.query.all()
 
     def save(self):
         db.session.add(self)
